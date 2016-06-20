@@ -37,9 +37,7 @@ Several particular questions will be addressed, and an overall look at the relat
       *Incomes listed are annual, per capita*
     
 
-###Data Cleanup Code
-
-Below is the code used to cleanup and explore the data.  To skip ahead to the Data Analysis, go to the next section, "Analysis."
+###Data Cleanup
 
 1. Packages needed to reproduce code:
   
