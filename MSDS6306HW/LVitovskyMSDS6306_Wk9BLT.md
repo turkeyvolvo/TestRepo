@@ -47,6 +47,7 @@ plot(GWPHret)
 ```
 
 ![](LVitovskyRMDfile_files/figure-html/volplot-1.png)<!-- -->
+
 As one can see, this stock has experienced some volatility.  In the beginning years, there was some volatility, but so far this year has proven very volatile for GW Pharmaceuticals.  It is not clear if this will occur more often, or if it was just a random "one off".  Perhaps there was an FDA decision, or a legal decision regarding Cannibis, that affected the stock price during this time frame.
 
 Now we will examine what happens when we exponntially down-weight older returns.
@@ -78,4 +79,4 @@ The black line is applying a weight of .9, the red a weight of .96, and the blue
 
 ##Conclusion
 
-GWPH is not a particulary volatile stock, but it seems very "excitable" given its product.  It is certainly speculative, and not recommended for the faint of heart.  Indeed, it 52 week range was $35.83 - 126.47.  After some internet research, I found that this has been a very busy year for them as they work to develop treatments for many chronic diseases through their drug Epidiolex.  Most notably, they had favorable results from phase 3 of a trial of Epidiolex, which showed with "highstatistical significance that Epidiolex treatment reduces drop seizures compared to placebo"(GlobalNewsWire.com).
+GWPH is not a particulary volatile stock, but it seems very "excitable" given its product.  It is certainly speculative, and not recommended for the faint of heart.  Indeed, it 52 week range was $35.83 - 126.47.  After some internet research, I found that this has been a very busy year for them as they work to develop treatments for many chronic diseases through their drug Epidiolex.  Most notably, they had favorable results from phase 3 of a trial of Epidiolex, which showed with "high statistical significance that Epidiolex treatment reduces drop seizures compared to placebo"(GlobalNewsWire.com).
