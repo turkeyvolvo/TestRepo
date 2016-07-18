@@ -53,9 +53,9 @@ plot(GWPHret)
 
 ![](LVitovskyRMDfile_files/figure-html/volplot-1.png)<!-- -->
 
-As one can see, this stock has definitely experiences some volatility over its lifetime, particularly in the beginning of its being publicly traded, and currently.  Given the asset class (healthcare), it is not unusual to see this type of volatility.  Perhaps there was an FDA decision, a legal/political decision regarding Cannibis, or even management changes that affected the stock price during its lifetime.  It seems to "calm down" after some initial public offering volatility, but then picked up remarkably in 2016.
+As one can see, this stock has definitely experienced some volatility over its lifetime, particularly in the beginning of its being publicly traded (IPO), and most recently.  Given the asset class (healthcare), it is not unusual to see this type of volatility.  Perhaps there was an FDA decision, a legal/political decision regarding Cannibis, or even management changes that affected the stock price during its lifetime.  It seems to "calm down" after some initial public offering volatility, but then picked up remarkably in 2016.
 
-Now we will examine what happens when we exponntially down-weight older returns.
+Now we will examine what happens when we exponentially down-weight older returns.
 
 
 
