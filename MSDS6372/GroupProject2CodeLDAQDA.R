@@ -49,3 +49,22 @@ modelFitLDA
 confusionMatrix(test$diagnosis, predict(modelFitQDA, test))
 confusionMatrix(test$diagnosis, predict(modelFitLDA, test))
 
+##visualize the lda and qda data
+plot(lda.class)
+plot(qda.class) ##qda graph - what does it mean
+
+
+
+
+##plot lda and qda - incomplete - work in progress!!
+require(ggplot2)
+require(scales)
+require(gridExtra)
+
+lda <- lda(diagnosis~ ., train)
+prop.lda = lda$svd^2 / sum(lda$svd^2)
+plda <- predict(object = lda, newdata = test)
+
+qda <- qda(diagnosis~ ., train)
+prop.qda = qda$svd^2 / sum(qda$svd^2)
+pqda <- predict (object = qda, newdata = test)
