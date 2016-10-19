@@ -1,3 +1,5 @@
+##source: http://www.stat.berkeley.edu/classes/s133/Nclass2.html
+##source: https://rpubs.com/ryankelly/LDA-QDA
 library(MASS)
 cancerdata.raw <- read.csv("cancerdata.csv", header = TRUE)
 ##or you can use ...
@@ -24,3 +26,17 @@ mean(lda.predict$class==test$diagnosis)
 
 #use a different threshold of 90%
 sum(lda.predict$posterior[,1]>0.9)
+
+##QDA
+qda.fit <- qda(diagnosis~ ., data=train)
+qda.fit
+
+##predict class
+qda.class <- predict(qda.fit, test)$class
+table(qda.class, test$diagnosis)
+
+##test for accuracy
+mean(qda.class == test$diagnosis)
+
+modelFit <- train(diagnosis~ ., method='qda', c('scale', 'center'), data=train)
+modelFit
