@@ -1,7 +1,9 @@
 ##source: http://www.stat.berkeley.edu/classes/s133/Nclass2.html
 ##source: https://rpubs.com/ryankelly/LDA-QDA
 library(MASS)
+library(caret)
 cancerdata.raw <- read.csv("cancerdata.csv", header = TRUE)
+
 ##or you can use ...
 ##cancerdata.raw <- read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data", header = FALSE, sep=",")
 ##check out the data
@@ -38,5 +40,8 @@ table(qda.class, test$diagnosis)
 ##test for accuracy
 mean(qda.class == test$diagnosis)
 
-modelFit <- train(diagnosis~ ., method='qda', c('scale', 'center'), data=train)
-modelFit
+modelFitQDA <- train(diagnosis~ ., method='qda', c('scale', 'center'), data=train)
+modelFitQDA
+
+modelFitLDA <- train(diagnosis~ ., method='lda', c('scale', 'center'), data=train)
+modelFitLDA
