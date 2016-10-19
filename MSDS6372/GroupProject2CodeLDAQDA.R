@@ -45,3 +45,7 @@ modelFitQDA
 
 modelFitLDA <- train(diagnosis~ ., method='lda', c('scale', 'center'), data=train)
 modelFitLDA
+
+confusionMatrix(test$diagnosis, predict(modelFitQDA, test))
+confusionMatrix(test$diagnosis, predict(modelFitLDA, test))
+
