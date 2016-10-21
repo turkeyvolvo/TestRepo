@@ -3,6 +3,8 @@
 library(MASS)
 library(klaR)
 library(caret)
+library(formattable)
+
 cancerdata.raw <- read.csv("cancerdata.csv", header = TRUE)
 
 ##or you can use ...
@@ -11,9 +13,13 @@ cancerdata.raw <- read.csv("cancerdata.csv", header = TRUE)
 summary(cancerdata.raw)
 str(cancerdata.raw)
 
-# Split data into testing and training
-train <- cancerdata.raw[2:285,]
-test <- cancerdata.raw[286:569,]
+# Split data into testing and training 50/50 split of original dataset
+train <- cancerdata.raw[sample(nrow(cancerdata.raw), round(nrow(cancerdata.raw)/2 ,0)), ]
+
+testRows <- !(cancerdata.raw$id %in% train$id)
+test <- cancerdata.raw[testRows,]
+
+
 
 # run wilkes lambda stepwise variable selection
 VariableSelect <- greedy.wilks(diagnosis ~  radius_mean  + 
@@ -49,17 +55,20 @@ VariableSelect <- greedy.wilks(diagnosis ~  radius_mean  +
                                ,data = cancerdata.raw
                                ,niveau = 0.05)
 
-##run LDA
+##LDA fit
 lda.fit <- lda(VariableSelect$formula, data=train)
 lda.fit
 lda.predict <- predict(lda.fit, data=test)
+
+## predict class
+lda.class <- predict(lda.fit, test)$class
 
 ##see what's available from the predict call
 names(lda.predict)
 
 ##table the results of the predictions compared to the real diagnoses
-table(lda.predict$class, test$diagnosis)
-mean(lda.predict$class==test$diagnosis)
+table(lda.class, test$diagnosis)
+LDA.Accuracy <- mean(lda.class==test$diagnosis)
 
 #use a different threshold of 90%
 sum(lda.predict$posterior[,1]>0.9)
@@ -73,7 +82,7 @@ qda.class <- predict(qda.fit, test)$class
 table(qda.class, test$diagnosis)
 
 ##test for accuracy
-mean(qda.class == test$diagnosis)
+QDA.Accuracy <- mean(qda.class == test$diagnosis)
 
 modelFitQDA <- train(VariableSelect$formula, method='qda', c('scale', 'center'), data=train)
 modelFitQDA
@@ -85,14 +94,15 @@ confusionMatrix(test$diagnosis, predict(modelFitQDA, test))
 confusionMatrix(test$diagnosis, predict(modelFitLDA, test))
 
 
+par(mfcol=c(1, 3))
+
 ##visualize the Raw Diagnosis
-plot(test$diagnosis)
+plot(test$diagnosis, main = "Original Test Data")
 ##visualize the lda and qda predicted data
-plot(lda.predict$class)
-plot(qda.class) ##qda graph - what does it mean
+plot(lda.class, main = "Predicted LDA Test Data")
+plot(qda.class, main = "Predicted QDA Test Data") ##qda graph - what does it mean
 
-
-
+formattable(as.data.frame(cbind(LDA.Accuracy,QDA.Accuracy)))
 
 ##plot lda and qda - incomplete - work in progress!!
 require(ggplot2)
