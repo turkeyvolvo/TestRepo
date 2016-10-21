@@ -52,7 +52,7 @@ VariableSelect <- greedy.wilks(diagnosis ~  radius_mean  +
                                  concave.points_worst    +
                                  symmetry_worst          +
                                  fractal_dimension_worst
-                               ,data = cancerdata.raw
+                               ,data = train
                                ,niveau = 0.05)
 
 ##LDA fit
@@ -103,6 +103,44 @@ plot(lda.class, main = "Predicted LDA Test Data")
 plot(qda.class, main = "Predicted QDA Test Data") ##qda graph - what does it mean
 
 formattable(as.data.frame(cbind(LDA.Accuracy,QDA.Accuracy)))
+
+
+########## LDA/QDA on full dataset ###########
+##LDA fit
+ldaraw.fit <- lda(VariableSelect$formula, data=cancerdata.raw)
+
+## predict class
+ldaraw.class <- predict(ldaraw.fit, cancerdata.raw)$class
+
+##table the results of the predictions compared to the real diagnoses
+LDAraw.Accuracy <- mean(ldaraw.class==cancerdata.raw$diagnosis)
+
+##QDA
+qdaraw.fit <- qda(VariableSelect$formula, data=cancerdata.raw)
+
+##predict class
+qdaraw.class <- predict(qdaraw.fit, cancerdata.raw)$class
+
+##test for accuracy
+QDAraw.Accuracy <- mean(qdaraw.class == cancerdata.raw$diagnosis)
+
+
+##visualize the Raw Diagnosis
+plot(cancerdata.raw$diagnosis, main = "Original Raw Test Data")
+
+##visualize the lda and qda predicted data
+plot(ldaraw.class, main = "Predicted Raw LDA Test Data")
+plot(qdaraw.class, main = "Predicted Raw QDA Test Data") ##qda graph - what does it mean
+
+formattable(as.data.frame(cbind(LDAraw.Accuracy,QDAraw.Accuracy)))
+
+table(cancerdata.raw$diagnosis)
+table(ldaraw.class)
+table(qdaraw.class)
+
+##############################################
+
+
 
 ##plot lda and qda - incomplete - work in progress!!
 require(ggplot2)
