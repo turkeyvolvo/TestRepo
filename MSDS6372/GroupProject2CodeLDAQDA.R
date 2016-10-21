@@ -52,7 +52,7 @@ VariableSelect <- greedy.wilks(diagnosis ~  radius_mean  +
                                  concave.points_worst    +
                                  symmetry_worst          +
                                  fractal_dimension_worst
-                               ,data = train
+                               ,data = cancerdata.raw
                                ,niveau = 0.05)
 
 ##LDA fit
