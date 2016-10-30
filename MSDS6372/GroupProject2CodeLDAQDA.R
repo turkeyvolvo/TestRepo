@@ -55,6 +55,23 @@ VariableSelect <- greedy.wilks(diagnosis ~  radius_mean  +
                                ,data = cancerdata.raw
                                ,niveau = 0.05)
 
+#check out the variables
+par(mfrow=c(3,2))
+hist(cancerdata.raw$concave.points_worst)
+hist(cancerdata.raw$radius_worst)
+hist(cancerdata.raw$texture_worst)
+hist(cancerdata.raw$area_worst)
+hist(cancerdata.raw$smoothness_se)
+hist(cancerdata.raw$symmetry_worst)
+hist(cancerdata.raw$compactness_se)
+hist(cancerdata.raw$radius_se)
+hist(cancerdata.raw$fractal_dimension_worst)
+hist(cancerdata.raw$compactness_mean)
+hist(cancerdata.raw$concave.points_mean)
+hist(cancerdata.raw$concavity_worst)
+hist(cancerdata.raw$concavity_se)
+hist(cancerdata.raw$area_se)
+
 ##LDA fit
 lda.fit <- lda(VariableSelect$formula, data=train)
 lda.fit
@@ -139,18 +156,3 @@ table(ldaraw.class)
 table(qdaraw.class)
 
 ##############################################
-
-
-
-##plot lda and qda - incomplete - work in progress!!
-require(ggplot2)
-require(scales)
-require(gridExtra)
-
-lda <- lda(VariableSelect$formula, train)
-prop.lda = lda$svd^2 / sum(lda$svd^2)
-plda <- predict(object = lda, newdata = test)
-
-qda <- qda(VariableSelect$formula, train)
-prop.qda = qda$svd^2 / sum(qda$svd^2)
-pqda <- predict (object = qda, newdata = test)
