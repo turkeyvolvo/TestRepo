@@ -3,18 +3,23 @@ infile '/folders/myfolders/msds6372/CancerData.csv' dlm="," firstobs=2;
 input id diagnosis $ radius_mean texture_mean perimeter_mean area_mean smoothness_mean compactness_mean concavity_mean concavepoints_mean symmetry_mean fractal_dimension_mean radius_se texture_se perimeter_se area_se smoothness_se compactness_se concavity_se concave_points_se symmetry_se fractal_dimension_se radius_worst texture_worst perimeter_worst area_worst smoothness_worst compactness_worst concavity_worst concavepoints_worst symmetry_worst fractal_dimension_worst;
 run;
 
+proc glm data=cancerdata;
+class  diagnosis;
+model radius_mean texture_mean perimeter_mean area_mean smoothness_mean compactness_mean concavity_mean concavepoints_mean symmetry_mean fractal_dimension_mean radius_se texture_se perimeter_se area_se smoothness_se compactness_se concavity_se concave_points_se symmetry_se fractal_dimension_se radius_worst texture_worst perimeter_worst area_worst smoothness_worst compactness_worst concavity_worst concavepoints_worst symmetry_worst fractal_dimension_worst = diagnosis;
+manova h = diagnosis / printe printh summary;
+run;
+
 ods select Cov PearsonCorr;
 proc corr data=cancerdata outp=OutCorr/** store results for easier viewing later**/
           nomiss /** listwise deletion of missing values **/
           cov;   /**  include covariances **/
 var radius_mean texture_mean perimeter_mean area_mean smoothness_mean compactness_mean concavity_mean concavepoints_mean symmetry_mean fractal_dimension_mean radius_se texture_se perimeter_se area_se smoothness_se compactness_se concavity_se concave_points_se symmetry_se fractal_dimension_se radius_worst texture_worst perimeter_worst area_worst smoothness_worst compactness_worst concavity_worst concavepoints_worst symmetry_worst fractal_dimension_worst;
-
 run;
 
-proc print data=OutCorr;
+proc print data=OutCorr; /**print OutCorr for a centralized COV and COR table**/
 run;
 
-data newcancerdata;
+data newcancerdata; /**only keep 14 primary variables**/
 set cancerdata;
 keep id diagnosis concavepoints_worst radius_worst texture_worst area_worst smoothness_se symmetry_worst compactness_se radius_se fractal_dimension_worst compactness_mean concavepoints_mean concavity_worst concavity_se area_se;
 run;
@@ -24,11 +29,27 @@ proc sgscatter data=newcancerdata;
 matrix compactness_mean--fractal_dimension_worst;
 run;
 
-proc surveyselect data=newcancerdata samprate=0.5 outall seed=761071215
+proc surveyselect data=newcancerdata samprate=0.5 outall seed=761071215 /**split data set into two random groups, keep seed**/
 method=srs out=train;
 run;
-proc sort data=train;
+proc sort data=train; /**sort train set**/
 by selected;
+run;
+
+data cancertrain; /**create train set**/
+set train;
+if selected=1 then delete;
+run;
+
+data cancertest; /**create test set**/
+set train;
+if selected=0 then delete;
+run;
+
+
+proc discrim data=cancertrain pool=test testdata=cancertest testout=a; /**run DA as SAS sees fit**/
+class diagnosis;
+var concavepoints_worst radius_worst texture_worst area_worst smoothness_se symmetry_worst compactness_se radius_se fractal_dimension_worst compactness_mean concavepoints_mean concavity_worst concavity_se area_se;
 run;
 
 data cancertrain;
